@@ -26,3 +26,29 @@ type User {
   username: String! @unique
   password: String!
 }
+
+type Query {
+  getUser: User
+  getDrinkList: [Drink]!
+  getFoodList: [Food]!
+  getOrderList: [Order]!
+}
+
+type Mutation {
+  signupUser(username: String!, password: String!): User!
+  addDrink(name: String!, price: Int!): Drink!
+  addFood(
+    name: String!
+    price: Int!
+    shift: Boolean!
+    extra: [String]
+    side: [String]
+  ): Food!
+  addOrder(
+    food: ID!
+    drink: ID!
+    total: Int!
+    client: String!
+    employee: ID!
+  ): Order!
+}
