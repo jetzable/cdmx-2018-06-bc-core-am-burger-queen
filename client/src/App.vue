@@ -1,31 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <h1>Hey</h1>
+    <!-- Horizontal Navbar -->
+    <v-toolbar fixed color="primary" dark>
+
+      <!-- App Title -->
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor:pointer">
+          BurgerQueen
+        </router-link>
+      </v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <!-- Horizontal NavBar Links -->
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat v-for="item in horizontalNavItem" :key="item.title" :to="item.link">
+          <v-icon class="hidden-sm-only" left>{{item.icon}}</v-icon>
+          {{item.title}}
+        </v-btn>
+
+      </v-toolbar-items>
+
+    </v-toolbar>
+
+    <!-- App content -->
+    <main>
+      <router-view />
+    </main>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+export default {
+  name: "App",
+  computed: {
+    horizontalNavItem() {
+      return [
+        { icon: "create", title: "Registrar", link: "/signup" },
+        { icon: "lock_open", title: "Iniciar Sesión", link: "/signin" }
+      ];
+    }
+  }
+};
+</script>
