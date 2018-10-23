@@ -1,9 +1,10 @@
 <template>
   <v-app>
-    <h1>Home</h1>
-    <v-btn color="success">
-      <v-icon>search</v-icon>Button
-    </v-btn>
+    <div class="container-fluid text-center">
+      <a href="/signin">
+        <img id="main-logo" class="image-fluid mx-auto" src="https://i.imgur.com/NJ47q00.png" alt="BurgerJoint BurgerBar Logo">
+      </a>
+    </div>
     <router-view />
   </v-app>
 </template>
@@ -13,3 +14,9 @@ export default {
   name: "home"
 };
 </script>
+
+ <style>
+#main-logo {
+  margin-top: 20%;
+}
+</style>

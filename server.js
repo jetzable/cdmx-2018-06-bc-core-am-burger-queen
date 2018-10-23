@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 
 const Drink = require("./models/Drink");
+const Extra = require("./models/Extra");
+const Side = require("./models/Side");
 const Food = require("./models/Food");
 const Order = require("./models/Order");
 const User = require("./models/User");
@@ -28,7 +30,9 @@ const server = new ApolloServer({
     Drink,
     Food,
     User,
-    Order
+    Order,
+    Extra,
+    Side
   }
 });
 // { port: process.env.PORT || 4000 }

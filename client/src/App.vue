@@ -1,13 +1,13 @@
 <template>
-  <div id="app">
-    <h1>Hey</h1>
+  <div>
     <!-- Horizontal Navbar -->
-    <v-toolbar fixed color="primary" dark>
+    <v-toolbar fixed color="secondary" dark>
 
       <!-- App Title -->
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor:pointer">
-          BurgerQueen
+          <img src="https://i.imgur.com/NJ47q00.png" alt="BurgerJoint BurgerBar Logo" width="48px">
+          BurgerJoint
         </router-link>
       </v-toolbar-title>
 
@@ -16,7 +16,7 @@
       <!-- Horizontal NavBar Links -->
       <v-toolbar-items class="hidden-xs-only">
         <v-btn flat v-for="item in horizontalNavItem" :key="item.title" :to="item.link">
-          <v-icon class="hidden-sm-only" left>{{item.icon}}</v-icon>
+          <v-icon class="hidden-xs-only" left>{{item.icon}}</v-icon>
           {{item.title}}
         </v-btn>
 
@@ -37,10 +37,7 @@ export default {
   name: "App",
   computed: {
     horizontalNavItem() {
-      return [
-        { icon: "create", title: "Registrar", link: "/signup" },
-        { icon: "lock_open", title: "Iniciar Sesión", link: "/signin" }
-      ];
+      return [{ icon: "lock_open", title: "Iniciar Sesión", link: "/signin" }];
     }
   }
 };

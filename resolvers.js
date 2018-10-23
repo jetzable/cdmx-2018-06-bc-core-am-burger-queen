@@ -9,6 +9,14 @@ module.exports = {
       const foodies = await Food.find({}).sort({ name: "desc" });
       return foodies;
     },
+    getExtraList: async (_, args, { Extra }) => {
+      const extras = await Extra.find({}).sort({ name: "desc" });
+      return extras;
+    },
+    getSideList: async (_, args, { Side }) => {
+      const sides = await Side.find({}).sort({ name: "desc" });
+      return sides;
+    },
     getOrderList: async (_, args, { Order }) => {
       const orders = await Order.find({}).sort({ client: "desc" });
       return orders;
@@ -41,7 +49,33 @@ module.exports = {
       }).save();
       return newDrink;
     },
-    addFood: async (_, { name, price, shift, extra, side }, { Food }) => {
+    addExtra: async (_, { name, price }, { Extra }) => {
+      const extra = await Extra.findOne({
+        name
+      });
+      if (extra) {
+        throw new Error("Extra already exist");
+      }
+      const newExtra = await new Extra({
+        name,
+        price
+      }).save();
+      return newExtra;
+    },
+    addSide: async (_, { name, price }, { Side }) => {
+      const side = await Side.findOne({
+        name
+      });
+      if (side) {
+        throw new Error("Side already exist");
+      }
+      const newSide = await new Side({
+        name,
+        price
+      }).save();
+      return newSide;
+    },
+    addFood: async (_, { name, price, shift }, { Food }) => {
       const food = await Food.findOne({
         name
       });
@@ -51,15 +85,13 @@ module.exports = {
       const newFood = await new Food({
         name,
         price,
-        shift,
-        extra,
-        side
+        shift
       }).save();
       return newFood;
     },
     addOrder: async (
       _,
-      { food, drink, total, client, employee },
+      { food, drink, total, client, employee, extra, side },
       { Order }
     ) => {
       const newOrder = await new Order({
@@ -67,7 +99,9 @@ module.exports = {
         drink,
         total,
         client,
-        employee
+        employee,
+        extra,
+        side
       }).save();
       return newOrder;
     }

@@ -4,22 +4,23 @@ import "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./registerServiceWorker";
-// import VueApollo from "vue-apollo";
-// import ApolloClient from "apollo-boost";
 
-// Vue.use(VueApollo);
+import ApolloClient from "apollo-boost";
+import VueApollo from "vue-apollo";
 
+Vue.use(VueApollo);
+
+// Setup ApolloClient
 export const defaultClient = new ApolloClient({
-  // uri: "https://burger-queen-project-ksxwftsips.now.sh/graphql"
   uri: "http://localhost:4000/graphql"
 });
-// const ApolloProvider = new VueApollo({ defaultClient });
+
+const apolloProvider = new VueApollo({ defaultClient });
 
 Vue.config.productionTip = false;
 
 new Vue({
-  provide: ApolloProvider.provide(),
+  provide: apolloProvider.provide(),
   router,
   store,
   render: h => h(App)
