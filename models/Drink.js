@@ -8,6 +8,10 @@ const DrinkSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true
+  },
+  shift: {
+    type: Boolean,
+    required: true
   }
 });
 

@@ -32,14 +32,12 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs12>
-                  <v-btn :loading="loading" :disabled="!isFormValid || loading" color="accent" type="submit">
+                  <v-btn :loaging="loading" :disabled="!isFormValid || loading" color="accent" type="submit">
                     <span slot="loader" class="custom-loader">
                       <v-icon light>cached</v-icon>
                     </span>
 
                     Iniciar Sesión</v-btn>
-                  <!-- <h3>¿No tienes una cuenta?</h3> -->
-                  <!-- <router-link to="/signup">Registrate</router-link> -->
                 </v-flex>
               </v-layout>
             </v-form>

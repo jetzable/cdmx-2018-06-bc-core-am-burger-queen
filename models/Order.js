@@ -17,7 +17,7 @@ const OrderSchema = new mongoose.Schema({
   },
   client: {
     type: String,
-    required: true
+    required: false
   },
   employee: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,11 +33,11 @@ const OrderSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     required: false,
     ref: "Extra"
+  },
+  table: {
+    type: Number,
+    required: false
   }
-  // table: {
-  //   type: Number,
-  //   required: false
-  // }
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
