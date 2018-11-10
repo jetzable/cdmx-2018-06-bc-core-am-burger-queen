@@ -7,6 +7,12 @@ type Food {
   side: [String]
 }
 
+type User {
+  _id: ID
+  username: String
+  employee: Int!
+}
+
 type Drink {
   _id: ID
   name: String!
@@ -22,6 +28,7 @@ type Order {
   extra: [Extra]
   side: [Side]
   table: Int!
+  employee: Int!
 }
 
 type Extra {
@@ -40,11 +47,13 @@ type Query {
   getDrinkList: [Drink]!
   getFoodList: [Food]!
   getOrderList: [Order]!
-  getExtraList: [Extra]
-  getSideList: [Side]
+  getExtrasList: [Extra]
+  getSidesList: [Side]
+  getUserList: [User]!
 }
 
 type Mutation {
+  addUser(username: String, employee: Int!): User!
   addExtra(name: String!, price: Int!): Extra!
   addSide(name: String!, price: Int!): Side!
   addDrink(name: String!, price: Int!): Drink!
@@ -56,5 +65,6 @@ type Mutation {
     extra: [ID]
     side: [ID]
     table: Int!
+    employee: Int!
   ): Order!
 }

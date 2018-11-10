@@ -37,7 +37,10 @@ export default {
   name: "App",
   computed: {
     horizontalNavItem() {
-      return [{ icon: "playlist_add", title: "Nueva Orden", link: "/new" }];
+      return [
+        { icon: "playlist_add", title: "Add Order", link: "/new" },
+        { icon: "list_alt", title: "List Orders", link: "/order" }
+      ];
     }
   }
 };
