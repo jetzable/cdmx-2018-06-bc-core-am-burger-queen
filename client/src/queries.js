@@ -45,7 +45,6 @@ export const GET_DRINK_LIST = gql`
       _id
       name
       price
-      shift
     }
   }
 `;

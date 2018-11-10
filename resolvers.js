@@ -1,24 +1,5 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
-const createToken = (user, secret, expiresIn) => {
-  const { username, password } = user;
-  return jwt.sign({ username, password }, secret, { expiresIn });
-};
-
 module.exports = {
   Query: {
-    getUser: () => null,
-    getCurrentUser: async (_, args, { User, currentUser }) => {
-      if (!currentUser) {
-        return null;
-      }
-      const user = await User.findOne({
-        username: currentUser.username
-      });
-
-      return user;
-    },
     getDrinkList: async (_, args, { Drink }) => {
       const drinks = await Drink.find({}).sort({ name: "desc" });
       return drinks;
@@ -36,34 +17,11 @@ module.exports = {
       return sides;
     },
     getOrderList: async (_, args, { Order }) => {
-      const orders = await Order.find({}).sort({ client: "desc" });
+      const orders = await Order.find({}).sort({ table: "desc" });
       return orders;
     }
   },
   Mutation: {
-    signinUser: async (_, { username, password }, { User }) => {
-      const user = await User.findOne({ username });
-      if (!user) {
-        throw new Error("User not found");
-      }
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
-        throw new Error("Invalid password");
-      }
-      return { token: createToken(user, process.env.SECRET, "1hr") };
-    },
-    signupUser: async (_, { username, email, password }, { User }) => {
-      const user = await User.findOne({ username });
-      if (user) {
-        throw new Error("User already exists");
-      }
-      const newUser = await new User({
-        username,
-        email,
-        password
-      }).save();
-      return { token: createToken(newUser, process.env.SECRET, "1hr") };
-    },
     addDrink: async (_, { name, price }, { Drink }) => {
       const drink = await Drink.findOne({
         name
@@ -119,15 +77,13 @@ module.exports = {
     },
     addOrder: async (
       _,
-      { food, drink, total, client, employee, extra, side, table },
+      { food, drink, total, extra, side, table },
       { Order }
     ) => {
       const newOrder = await new Order({
         food,
         drink,
         total,
-        client,
-        employee,
         extra,
         side,
         table
