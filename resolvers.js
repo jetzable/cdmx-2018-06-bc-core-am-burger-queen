@@ -1,6 +1,5 @@
 module.exports = {
   Query: {
-    getUser: () => null,
     getDrinkList: async (_, args, { Drink }) => {
       const drinks = await Drink.find({}).sort({ name: "desc" });
       return drinks;
@@ -18,24 +17,11 @@ module.exports = {
       return sides;
     },
     getOrderList: async (_, args, { Order }) => {
-      const orders = await Order.find({}).sort({ client: "desc" });
+      const orders = await Order.find({}).sort({ table: "desc" });
       return orders;
     }
   },
   Mutation: {
-    signupUser: async (_, { username, password }, { User }) => {
-      const user = await User.findOne({
-        username
-      });
-      if (user) {
-        throw new Error("Username already exist");
-      }
-      const newUser = await new User({
-        username,
-        password
-      }).save();
-      return newUser;
-    },
     addDrink: async (_, { name, price }, { Drink }) => {
       const drink = await Drink.findOne({
         name
@@ -91,17 +77,16 @@ module.exports = {
     },
     addOrder: async (
       _,
-      { food, drink, total, client, employee, extra, side },
+      { food, drink, total, extra, side, table },
       { Order }
     ) => {
       const newOrder = await new Order({
         food,
         drink,
         total,
-        client,
-        employee,
         extra,
-        side
+        side,
+        table
       }).save();
       return newOrder;
     }

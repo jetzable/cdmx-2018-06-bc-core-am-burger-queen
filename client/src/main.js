@@ -8,8 +8,13 @@ import store from "./store";
 import ApolloClient from "apollo-boost";
 import VueApollo from "vue-apollo";
 
+import FormAlert from "./components/Shared/FormAlert.vue";
+
+Vue.component("form-alert", FormAlert);
+
 Vue.use(VueApollo);
 
+//
 // Setup ApolloClient
 export const defaultClient = new ApolloClient({
   uri: "http://localhost:4000/graphql"

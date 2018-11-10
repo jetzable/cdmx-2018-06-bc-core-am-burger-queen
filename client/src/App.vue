@@ -37,7 +37,7 @@ export default {
   name: "App",
   computed: {
     horizontalNavItem() {
-      return [{ icon: "lock_open", title: "Iniciar Sesión", link: "/signin" }];
+      return [{ icon: "playlist_add", title: "Nueva Orden", link: "/new" }];
     }
   }
 };
