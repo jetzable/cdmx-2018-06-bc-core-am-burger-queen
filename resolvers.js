@@ -4,15 +4,19 @@ module.exports = {
       const drinks = await Drink.find({}).sort({ name: "desc" });
       return drinks;
     },
+    getUserList: async (_, args, { User }) => {
+      const users = await User.find({}).sort({ username: "desc" });
+      return users;
+    },
     getFoodList: async (_, args, { Food }) => {
       const foodies = await Food.find({}).sort({ name: "desc" });
       return foodies;
     },
-    getExtraList: async (_, args, { Extra }) => {
+    getExtrasList: async (_, args, { Extra }) => {
       const extras = await Extra.find({}).sort({ name: "desc" });
       return extras;
     },
-    getSideList: async (_, args, { Side }) => {
+    getSidesList: async (_, args, { Side }) => {
       const sides = await Side.find({}).sort({ name: "desc" });
       return sides;
     },
@@ -75,9 +79,22 @@ module.exports = {
       }).save();
       return newFood;
     },
+    addUser: async (_, { username, employee }, { User }) => {
+      const user = await User.findOne({
+        username
+      });
+      if (user) {
+        throw new Error("User already exist");
+      }
+      const newUser = await new User({
+        username,
+        employee
+      }).save();
+      return newUser;
+    },
     addOrder: async (
       _,
-      { food, drink, total, extra, side, table },
+      { food, drink, total, extra, side, table, employee },
       { Order }
     ) => {
       const newOrder = await new Order({
@@ -86,7 +103,8 @@ module.exports = {
         total,
         extra,
         side,
-        table
+        table,
+        employee
       }).save();
       return newOrder;
     }

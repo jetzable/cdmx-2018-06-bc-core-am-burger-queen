@@ -28,6 +28,10 @@ const OrderSchema = new mongoose.Schema({
   table: {
     type: Number,
     required: true
+  },
+  employee: {
+    type: Number,
+    required: true
   }
 });
 
