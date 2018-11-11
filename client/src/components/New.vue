@@ -3,55 +3,46 @@
     <div class="row">
       <div class="col-lg-6 col-md-12 text-center">
         <div class="row">
-          <div class="col-md-6 align-title">
-            <h3>Drinks</h3>
-          </div>
-          <div class="col-md-6 mt-4">
-            <div v-for="drink in drinks" :key="drink.name" class="btn-group">
-              <v-btn color="primary" class="btn" v-on:click="addProductToOrder(drink)">{{drink.name}}</v-btn>
+          <h3 class="text-center mx-auto mt-2">Drinks</h3>
+          <div class="col-md-12">
+            <div v-for="drink in products" :key="drink.name" class="btn-group" v-if="drink.section === 'drink'">
+              <v-btn color="primary" class="btn" v-on:click="addProductToList(drink)">{{drink.name}}</v-btn>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 align-title">
-            <h3>Breakfast</h3>
-          </div>
-          <div class="col-md-6">
-            <div v-for="product in food" :key="product.name" v-if="product.shift === true" class="btn-group">
-              <v-btn color="secondary" class="btn" v-on:click="addProductToOrder(product)">{{product.name}}</v-btn>
+          <h3 class="text-center mx-auto mt-2">Breakfast</h3>
+          <div class="col-md-12">
+            <div v-for="breakfast in products" :key="breakfast.name" class="btn-group" v-if="breakfast.section === 'breakfast'">
+              <v-btn color="secondary" class="btn" v-on:click="addProductToList(breakfast)">{{breakfast.name}}</v-btn>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 align-title">
-            <h3>Dinner</h3>
-          </div>
-          <div class="col-md-6">
-            <div v-for="prod in food" :key="prod.name" v-if="prod.shift === false" class="btn-group">
-              <v-btn color="info" class="btn" v-on:click="addProductToOrder(prod)">{{prod.name}}</v-btn>
+          <h3 class="text-center mx-auto mt-2">Dinner</h3>
+          <div class="col-md-12">
+            <div v-for="dinner in products" :key="dinner.name" class="btn-group" v-if="dinner.section === 'dinner'">
+              <v-btn color="info" class="btn" v-on:click="addProductToList(dinner)">{{dinner.name}}</v-btn>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 align-title">
-            <h3>Extras & Sides</h3>
-          </div>
-          <div class="col-md-6">
-            <div v-for="side in sides" :key="side.name" class="btn-group">
-              <v-btn color="success" class="btn" v-on:click="addProductToOrder(side)">{{side.name}}</v-btn>
+          <h3 class="text-center mx-auto mt-2">Extras & Sides</h3>
+          <div class="col-md-12">
+            <div v-for="side in products" :key="side.name" class="btn-group">
+              <v-btn v-if="side.section === 'side'" color="success" class="btn" v-on:click="addProductToList(side)">{{side.name}}</v-btn>
             </div>
-            <div v-for="extra in extras" :key="extra.name" class="btn-group">
-              <v-btn color="error" class="btn" v-on:click="addProductToOrder(extra)">{{extra.name}}</v-btn>
+            <div v-for="extra in products" :key="extra.name" class="btn-group">
+              <v-btn v-if="extra.section === 'extra'" color="error" class="btn" v-on:click="addProductToList(extra)">{{extra.name}}</v-btn>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-6 col-md-12 text-center">
-        <form class="mt-4 text-center" @submit.prevent="handleAddOrder">
+        <v-form class="mt-4 text-center" v-model="isFormValid" lazy-validation ref="form" @submit.prevent="handleAddOrder">
           <div class="form-group mx-auto">
             <input type="number" placeholder="Table" class="form-control text-center" v-model="tableId">
             <input type="number" placeholder="Employee" class="form-control text-center" v-model="employeeId">
-            <p class="btn">{{this.total}}</p>
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -65,7 +56,7 @@
               </ul>
             </div>
           </div>
-        </form>
+        </v-form>
       </div>
     </div>
   </div>
@@ -78,37 +69,25 @@ export default {
   name: "new",
   data() {
     return {
-      tableId: "",
-      employeeId: "",
-      orderList: [],
-      total: 0
+      isFormValid: true,
+      tableId: null,
+      employeeId: null,
+      orderList: []
     };
   },
   created() {
-    this.handleGetFood();
-    this.handleGetDrink();
-    this.handleGetExtras();
-    this.handleGetSides();
-    this.addProductToOrder({});
+    this.handleGetProducts();
+    this.addProductToList({});
   },
   computed: {
-    ...mapGetters(["loading", "food", "drinks", "extras", "sides"])
+    ...mapGetters(["loading", "products"])
   },
   methods: {
-    addProductToOrder(element) {
+    addProductToList(element) {
       this.orderList.push(element);
     },
-    handleGetFood() {
-      this.$store.dispatch("getFoodList");
-    },
-    handleGetDrink() {
-      this.$store.dispatch("getDrinkList");
-    },
-    handleGetExtras() {
-      this.$store.dispatch("getExtrasList");
-    },
-    handleGetSides() {
-      this.$store.dispatch("getSidesList");
+    handleGetProducts() {
+      this.$store.dispatch("getProductsList");
     },
     handleNewOrder() {
       if (this.$refs.form.validate()) {

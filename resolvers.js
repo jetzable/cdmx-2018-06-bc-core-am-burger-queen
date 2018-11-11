@@ -1,85 +1,60 @@
 module.exports = {
   Query: {
-    getDrinkList: async (_, args, { Drink }) => {
-      const drinks = await Drink.find({}).sort({ name: "desc" });
-      return drinks;
+    getProductsList: async (_, args, {
+      Product
+    }) => {
+      const productsAvailable = await Product.find({}).sort({
+        name: "asc"
+      });
+      return productsAvailable;
     },
-    getUserList: async (_, args, { User }) => {
-      const users = await User.find({}).sort({ username: "desc" });
+    getUserList: async (_, args, {
+      User
+    }) => {
+      const users = await User.find({}).sort({
+        username: "desc"
+      });
       return users;
     },
-    getFoodList: async (_, args, { Food }) => {
-      const foodies = await Food.find({}).sort({ name: "desc" });
-      return foodies;
-    },
-    getExtrasList: async (_, args, { Extra }) => {
-      const extras = await Extra.find({}).sort({ name: "desc" });
-      return extras;
-    },
-    getSidesList: async (_, args, { Side }) => {
-      const sides = await Side.find({}).sort({ name: "desc" });
-      return sides;
-    },
-    getOrderList: async (_, args, { Order }) => {
-      const orders = await Order.find({}).sort({ table: "desc" });
+    getOrderList: async (_, args, {
+      Order
+    }) => {
+      const orders = await Order.find({}).sort({
+        table: "desc"
+      });
+      if (!orders) {
+        throw new Error("Order List empty.");
+      }
       return orders;
     }
   },
   Mutation: {
-    addDrink: async (_, { name, price }, { Drink }) => {
-      const drink = await Drink.findOne({
+    addProduct: async (_, {
+      name,
+      price,
+      section
+    }, {
+      Product
+    }) => {
+      const product = await Product.findOne({
         name
       });
-      if (drink) {
-        throw new Error("Drink already exist");
+      if (product) {
+        throw new Error("Product already exist");
       }
-      const newDrink = await new Drink({
-        name,
-        price
-      }).save();
-      return newDrink;
-    },
-    addExtra: async (_, { name, price }, { Extra }) => {
-      const extra = await Extra.findOne({
-        name
-      });
-      if (extra) {
-        throw new Error("Extra already exist");
-      }
-      const newExtra = await new Extra({
-        name,
-        price
-      }).save();
-      return newExtra;
-    },
-    addSide: async (_, { name, price }, { Side }) => {
-      const side = await Side.findOne({
-        name
-      });
-      if (side) {
-        throw new Error("Side already exist");
-      }
-      const newSide = await new Side({
-        name,
-        price
-      }).save();
-      return newSide;
-    },
-    addFood: async (_, { name, price, shift }, { Food }) => {
-      const food = await Food.findOne({
-        name
-      });
-      if (food) {
-        throw new Error("Food already exist");
-      }
-      const newFood = await new Food({
+      const newProduct = await new Product({
         name,
         price,
-        shift
+        section
       }).save();
-      return newFood;
+      return newProduct;
     },
-    addUser: async (_, { username, employee }, { User }) => {
+    addUser: async (_, {
+      username,
+      employee
+    }, {
+      User
+    }) => {
       const user = await User.findOne({
         username
       });
@@ -92,19 +67,23 @@ module.exports = {
       }).save();
       return newUser;
     },
-    addOrder: async (
-      _,
-      { food, drink, total, extra, side, table, employee },
-      { Order }
-    ) => {
+    addOrder: async (_, {
+      table,
+      employee,
+      status
+    }, {
+      Order
+    }) => {
+      const order = await Order.findOne({
+        table
+      });
+      if (order.status === 1) {
+        throw new Error('Penging Order');
+      }
       const newOrder = await new Order({
-        food,
-        drink,
-        total,
-        extra,
-        side,
         table,
-        employee
+        employee,
+        status
       }).save();
       return newOrder;
     }

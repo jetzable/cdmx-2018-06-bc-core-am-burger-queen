@@ -4,7 +4,7 @@ const md5 = require("md5");
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: false,
+    required: true,
     unique: true,
     trim: true
   },
