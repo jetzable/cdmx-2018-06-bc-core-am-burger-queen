@@ -1,13 +1,15 @@
-const { ApolloServer, gql } = require("apollo-server");
+const {
+  ApolloServer,
+  gql
+} = require("apollo-server");
 const mongoose = require("mongoose");
-require("dotenv").config({ path: "variables.env" });
+require("dotenv").config({
+  path: "variables.env"
+});
 const fs = require("fs");
 const path = require("path");
 
-const Drink = require("./models/Drink");
-const Extra = require("./models/Extra");
-const Side = require("./models/Side");
-const Food = require("./models/Food");
+const Product = require("./models/Product");
 const Order = require("./models/Order");
 const User = require("./models/User");
 
@@ -17,8 +19,9 @@ const typeDefs = fs.readFileSync(filePath, "utf-8");
 
 mongoose
   .connect(
-    process.env.MONGO_URI,
-    { useNewUrlParser: true }
+    process.env.MONGO_URI, {
+      useNewUrlParser: true
+    }
   )
   .then(() => console.log("Base de datos conectada"))
   .catch(error => console.log(error));
@@ -27,16 +30,15 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: {
-    Drink,
-    Food,
-    Side,
-    Extra,
+    Product,
     User,
     Order
   }
 });
 
 // { port: process.env.PORT || 4000 }
-server.listen().then(({ url }) => {
+server.listen().then(({
+  url
+}) => {
   console.log("Servidor activo ", url);
 });

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const DrinkSchema = new mongoose.Schema({
+const ProductSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -9,10 +9,10 @@ const DrinkSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  shift: {
-    type: Boolean,
+  section: {
+    type: String,
     required: true
   }
 });
 
-module.exports = mongoose.model("Drink", DrinkSchema);
+module.exports = mongoose.model("Product", ProductSchema);

@@ -1,70 +1,32 @@
-type Food {
+type Product {
   _id: ID
   name: String!
   price: Int!
-  shift: Boolean!
-  extra: [String]
-  side: [String]
-}
-
-type User {
-  _id: ID
-  username: String
-  employee: Int!
-}
-
-type Drink {
-  _id: ID
-  name: String!
-  price: Int!
-  shift: Boolean!
+  section: String!
 }
 
 type Order {
   _id: ID
-  food: [Food]!
-  drink: [Drink]!
-  total: Int!
-  extra: [Extra]
-  side: [Side]
   table: Int!
+  employee: ID!
+  status: Boolean!
+  listOfProducts: [Product]
+}
+
+type User {
+  _id: ID
+  username: String!
   employee: Int!
 }
 
-type Extra {
-  _id: ID
-  name: String!
-  price: String!
-}
-
-type Side {
-  _id: ID
-  name: String!
-  price: String!
-}
-
 type Query {
-  getDrinkList: [Drink]!
-  getFoodList: [Food]!
-  getOrderList: [Order]!
-  getExtrasList: [Extra]
-  getSidesList: [Side]
+  getProductsList: [Product]!
+  getOrderList: [Order]
   getUserList: [User]!
 }
 
 type Mutation {
-  addUser(username: String, employee: Int!): User!
-  addExtra(name: String!, price: Int!): Extra!
-  addSide(name: String!, price: Int!): Side!
-  addDrink(name: String!, price: Int!): Drink!
-  addFood(name: String!, price: Int!, shift: Boolean!): Food!
-  addOrder(
-    food: ID!
-    drink: ID!
-    total: Int!
-    extra: [ID]
-    side: [ID]
-    table: Int!
-    employee: Int!
-  ): Order!
+  addUser(username: String!, employee: Int!): User!
+  addProduct(name: String!, price: Int!, section: String!): Product!
+  addOrder(table: Int!, employee: ID!, status: Boolean!): Order!
 }
