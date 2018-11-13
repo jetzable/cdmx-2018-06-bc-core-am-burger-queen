@@ -11,7 +11,7 @@
           </thead>
           <tbody>
             <tr v-for="order in orders" :key="order.table">
-              <th scope="row" v-on:click="setOrderAsReady(order.table)">{{order.table}}</th>
+              <th scope="row" v-on:click="setOrderAsReady(order)">{{order.table}}</th>
               <td v-for="product in order.listOfProducts" :key="product">{{product}}</td>
             </tr>
           </tbody>
@@ -37,7 +37,9 @@ export default {
     listPendingOrders() {
       this.$store.dispatch("getOrderList");
     },
-    setOrderAsReady(table) {}
+    setOrderAsReady(order) {
+      console.log(order);
+    }
   }
 };
 </script>
