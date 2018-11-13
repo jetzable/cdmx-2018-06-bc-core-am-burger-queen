@@ -39,10 +39,10 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 text-center">
-        <v-form class="mt-4 text-center" v-model="isFormValid" lazy-validation ref="form" @submit.prevent="handleAddOrder">
+        <v-form class="mt-4 text-center" v-model="isFormValid" lazy-validation ref="form" @submit.prevent="handleNewOrder">
           <div class="form-group mx-auto">
             <input type="number" placeholder="Table" class="form-control text-center" v-model="tableId">
-            <input type="number" placeholder="Employee" class="form-control text-center" v-model="employeeId">
+            <input type="text" placeholder="Employee" class="form-control text-center" v-model="employeeId">
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -56,6 +56,7 @@
               </ul>
             </div>
           </div>
+          <v-btn :loading="loading" :disabled="!isFormValid || loading" color="info" type="submit">Order</v-btn>
         </v-form>
       </div>
     </div>
@@ -71,13 +72,15 @@ export default {
     return {
       isFormValid: true,
       tableId: null,
+      status: false,
       employeeId: null,
-      orderList: []
+      orderList: [],
+      productList: [],
+      priceList: []
     };
   },
   created() {
     this.handleGetProducts();
-    this.addProductToList({});
   },
   computed: {
     ...mapGetters(["loading", "products"])
@@ -85,13 +88,21 @@ export default {
   methods: {
     addProductToList(element) {
       this.orderList.push(element);
+      this.productList.push(element.name);
+      this.priceList.push(element.price);
     },
     handleGetProducts() {
       this.$store.dispatch("getProductsList");
     },
     handleNewOrder() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("addOrder", {});
+        this.$store.dispatch("addOrder", {
+          table: this.tableId,
+          employee: this.employeeId,
+          status: this.status,
+          listOfProducts: this.productList,
+          listOfPrices: this.priceList
+        });
         this.$router.push("/");
       }
     }

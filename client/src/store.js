@@ -7,7 +7,10 @@ import {
 } from "./main";
 
 import {
-  GET_PRODUCTS_LIST
+  GET_PRODUCTS_LIST,
+  GET_ORDER_LIST,
+  ADD_ORDER,
+  UPDATE_ORDER_STATUS
 } from "./queries";
 
 Vue.use(Vuex);
@@ -16,7 +19,8 @@ export default new Vuex.Store({
   state: {
     loading: false,
     error: null,
-    products: []
+    products: [],
+    orders: []
   },
   mutations: {
     setLoading: (state, payload) => {
@@ -24,6 +28,9 @@ export default new Vuex.Store({
     },
     setProducts: (state, payload) => {
       state.products = payload;
+    },
+    setOrders: (state, payload) => {
+      state.orders = payload;
     },
     setError: (state, payload) => {
       state.error = payload;
@@ -48,11 +55,90 @@ export default new Vuex.Store({
           commit("setLoading", false);
           console.error(err);
         });
+    },
+    getOrderList: ({
+      commit
+    }) => {
+      commit("setLoading", true);
+      apolloClient
+        .query({
+          query: GET_ORDER_LIST
+        })
+        .then(({
+          data
+        }) => {
+          commit("setOrders", data.getOrderList);
+          commit("setLoading", false);
+        })
+        .catch(err => {
+          commit("setLoading", false);
+          console.error(err);
+        });
+    },
+    addOrder: ({
+      commit
+    }, payload) => {
+      apolloClient
+        .mutate({
+          mutation: ADD_ORDER,
+          variables: payload,
+          update: (cache, {
+            data: {
+              addOrder
+            }
+          }) => {
+            // First read the query you want to update
+            const data = cache.readQuery({
+              query: GET_ORDER_LIST
+            });
+            // Create updated data
+            data.getOrderList.unshift(addOrder);
+            // Write updated data back to query
+            console.log(data);
+            cache.writeQuery({
+              query: GET_ORDER_LIST,
+              data
+            });
+          }
+        })
+        .then(({
+          data
+        }) => {
+          console.log(data.addOrder);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    updateOrderStatus: ({
+      state,
+      commit
+    }, payload) => {
+      apolloClient
+        .mutate({
+          mutation: UPDATE_ORDER_STATUS,
+          variables: payload
+        })
+        .then(({
+          data
+        }) => {
+          const index = state.orders.findIndex(
+            order => order.table === data.updateOrderStatus.table
+          );
+          const orders = [
+            ...state.orders.slice(0, index),
+            data.updateOrderStatus,
+            ...state.orders.slice(index + 1)
+          ];
+          commit("setOrders", orders);
+        })
+        .catch(error => console.log(error));
     }
   },
   getters: {
     loading: state => state.loading,
     error: state => state.error,
     products: state => state.products,
+    orders: state => state.orders
   }
 });

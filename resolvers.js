@@ -70,22 +70,52 @@ module.exports = {
     addOrder: async (_, {
       table,
       employee,
-      status
+      status,
+      listOfProducts,
+      listOfPrices
     }, {
       Order
     }) => {
       const order = await Order.findOne({
         table
       });
-      if (order.status === 1) {
-        throw new Error('Penging Order');
+      if (order) {
+        throw new Error('Table has a pending order.');
       }
       const newOrder = await new Order({
         table,
         employee,
-        status
+        status,
+        listOfProducts,
+        listOfPrices
       }).save();
       return newOrder;
-    }
+    },
+    updateOrderStatus: async (
+      _, {
+        table,
+        employee,
+        status,
+        listOfProducts,
+        listOfPrices
+      }, {
+        Order
+      }
+    ) => {
+      const order = await Order.findOneAndUpdate({
+        table: table
+      }, {
+        $set: {
+          table,
+          employee,
+          status,
+          listOfProducts,
+          listOfPrices
+        }
+      }, {
+        new: true
+      });
+      return order;
+    },
   }
 };
