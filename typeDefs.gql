@@ -36,4 +36,11 @@ type Mutation {
     listOfProducts: [String]!
     listOfPrices: [Int]!
   ): Order!
+  updateOrderStatus(
+    table: Int!
+    employee: ID!
+    status: Boolean!
+    listOfProducts: [String]!
+    listOfPrices: [Int]!
+  ): Order!
 }

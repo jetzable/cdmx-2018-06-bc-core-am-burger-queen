@@ -10,9 +10,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="order in orders" :key="order.table">
-              <th scope="row" v-on:click="setOrderAsReady(order)">{{order.table}}</th>
-              <td v-for="product in order.listOfProducts" :key="product">{{product}}</td>
+            <tr v-for="order in orders" :key="order.table" v-if="order.status === false">
+              <th scope="row">{{order.table}}</th>
+              <td>
+                <ul class="list-group list-group-flush" v-for="product in order.listOfProducts" :key="product">
+                  <li class="list-group-item">{{product}}</li>
+                </ul>
+              </td>
+              <td>
+                <v-btn v-on:click="setOrderAsReady(order)" color="error">Delivered</v-btn>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -38,14 +45,21 @@ export default {
       this.$store.dispatch("getOrderList");
     },
     setOrderAsReady(order) {
-      console.log(order);
+      this.$store.dispatch("updateOrderStatus", {
+        table: order.table,
+        employee: order.employee,
+        status: !status,
+        listOfProducts: order.listOfProducts,
+        listOfPrices: order.listOfPrices
+      });
+      this.$router.go();
     }
   }
 };
 </script>
 
 
-<style>
+<style scoped>
 .container-fluid {
   margin-top: 10%;
 }

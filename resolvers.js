@@ -90,6 +90,32 @@ module.exports = {
         listOfPrices
       }).save();
       return newOrder;
-    }
+    },
+    updateOrderStatus: async (
+      _, {
+        table,
+        employee,
+        status,
+        listOfProducts,
+        listOfPrices
+      }, {
+        Order
+      }
+    ) => {
+      const order = await Order.findOneAndUpdate({
+        table: table
+      }, {
+        $set: {
+          table,
+          employee,
+          status,
+          listOfProducts,
+          listOfPrices
+        }
+      }, {
+        new: true
+      });
+      return order;
+    },
   }
 };

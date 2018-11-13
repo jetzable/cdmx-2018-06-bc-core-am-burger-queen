@@ -9,7 +9,8 @@ import {
 import {
   GET_PRODUCTS_LIST,
   GET_ORDER_LIST,
-  ADD_ORDER
+  ADD_ORDER,
+  UPDATE_ORDER_STATUS
 } from "./queries";
 
 Vue.use(Vuex);
@@ -108,6 +109,30 @@ export default new Vuex.Store({
         .catch(err => {
           console.error(err);
         });
+    },
+    updateOrderStatus: ({
+      state,
+      commit
+    }, payload) => {
+      apolloClient
+        .mutate({
+          mutation: UPDATE_ORDER_STATUS,
+          variables: payload
+        })
+        .then(({
+          data
+        }) => {
+          const index = state.orders.findIndex(
+            order => order.table === data.updateOrderStatus.table
+          );
+          const orders = [
+            ...state.orders.slice(0, index),
+            data.updateOrderStatus,
+            ...state.orders.slice(index + 1)
+          ];
+          commit("setOrders", orders);
+        })
+        .catch(error => console.log(error));
     }
   },
   getters: {
