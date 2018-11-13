@@ -10,7 +10,8 @@ type Order {
   table: Int!
   employee: ID!
   status: Boolean!
-  listOfProducts: [Product]
+  listOfProducts: [String]!
+  listOfPrices: [Int]!
 }
 
 type User {
@@ -28,5 +29,11 @@ type Query {
 type Mutation {
   addUser(username: String!, employee: Int!): User!
   addProduct(name: String!, price: Int!, section: String!): Product!
-  addOrder(table: Int!, employee: ID!, status: Boolean!): Order!
+  addOrder(
+    table: Int!
+    employee: ID!
+    status: Boolean!
+    listOfProducts: [String]!
+    listOfPrices: [Int]!
+  ): Order!
 }

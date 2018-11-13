@@ -15,19 +15,12 @@ const OrderSchema = new mongoose.Schema({
     required: true
   },
   listOfProducts: [{
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: "Product"
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    price: {
-      type: Number,
-      required: true
-    }
+    type: String,
+    required: true,
+  }],
+  listOfPrices: [{
+    type: Number,
+    required: true,
   }]
 });
 
