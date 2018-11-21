@@ -1,5 +1,5 @@
 {
-  "name": "burger-queen-project",
+  "name": "burger-queen-project-back-end",
   "version": "1.0.0",
   "description": "Vue project",
   "main": "server.js",
@@ -9,7 +9,7 @@
     "dev": "concurrently --names \"server,client\" \"npm run server --silent\" \"npm run client --silent\""
   },
   "keywords": [],
-  "author": "Brenda Sanrey",
+  "author": "Palmidia Garay",
   "license": "ISC",
   "dependencies": {
     "apollo-boost": "^0.1.17",

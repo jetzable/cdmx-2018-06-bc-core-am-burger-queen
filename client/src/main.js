@@ -17,7 +17,7 @@ Vue.use(VueApollo);
 //
 // Setup ApolloClient
 export const defaultClient = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://burger-queen-project-back-end-ydvzlbmbrv.now.sh/graphql"
 });
 
 const apolloProvider = new VueApollo({

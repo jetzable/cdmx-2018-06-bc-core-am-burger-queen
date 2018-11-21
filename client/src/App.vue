@@ -4,7 +4,7 @@
     <v-toolbar fixed color="secondary" dark>
 
       <!-- App Title -->
-      <v-toolbar-title>
+      <v-toolbar-title class="hidden-xs-only">
         <router-link to="/" tag="span" style="cursor:pointer">
           <img src="https://i.imgur.com/NJ47q00.png" alt="BurgerJoint BurgerBar Logo" width="48px">
           BurgerJoint
@@ -14,7 +14,7 @@
       <v-spacer></v-spacer>
 
       <!-- Horizontal NavBar Links -->
-      <v-toolbar-items class="hidden-xs-only">
+      <v-toolbar-items class="hidden-sm-only">
         <v-btn flat v-for="item in horizontalNavItem" :key="item.title" :to="item.link">
           <v-icon class="hidden-xs-only" left>{{item.icon}}</v-icon>
           {{item.title}}
