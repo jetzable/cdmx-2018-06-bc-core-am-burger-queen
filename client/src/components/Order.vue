@@ -20,6 +20,10 @@
               <td>
                 <v-btn v-on:click="setOrderAsReady(order)" color="error">Delivered</v-btn>
               </td>
+              <td>
+                <PayPal amount="10.00" currency="USD" :client="credentials" env="sandbox">
+                </PayPal>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -31,9 +35,18 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PayPal from "vue-paypal-checkout";
 
 export default {
   name: "order",
+  data() {
+    return {
+      credentials: {
+        sandbox: "<sandbox client id>",
+        production: "<production client id>"
+      }
+    };
+  },
   created() {
     this.listPendingOrders();
   },
@@ -41,6 +54,9 @@ export default {
     ...mapGetters(["loading", "orders"])
   },
   methods: {
+    handlePayment(amount, currency, credentials) {
+      console.log(amount, currency, credentials);
+    },
     listPendingOrders() {
       this.$store.dispatch("getOrderList");
     },
@@ -54,6 +70,9 @@ export default {
       });
       this.$router.go();
     }
+  },
+  components: {
+    PayPal
   }
 };
 </script>
